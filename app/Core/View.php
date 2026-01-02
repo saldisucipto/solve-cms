@@ -6,7 +6,7 @@ class View
 {
     public static function render(string $view, array $data = []): void
     {
-        $theme = 'default';
+        $theme = Config::get('app.theme', 'default');
 
         $viewFile = BASE_PATH . "/themes/{$theme}/{$view}.php";
         $layout = BASE_PATH . "/themes/{$theme}/layouts/main.php";

@@ -3,13 +3,23 @@
 namespace App\Core;
 
 use App\Core\Router;
+use Dotenv\Dotenv;
 
 class App
 {
     protected Router $router; // dependancy injector
     public function __construct()
     {
+        $this->loadEnv();
         $this->router = new Router();
+    }
+
+    protected function loadEnv()
+    {
+        if (file_exists(BASE_PATH . '/.env')) {
+            $dotEnv = Dotenv::createImmutable(BASE_PATH);
+            $dotEnv->load();
+        }
     }
 
     /**

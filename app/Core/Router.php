@@ -8,37 +8,41 @@ class Router
 
     public function get(string $uri, array $action): void
     {
-        $this->routes['GET'][$this->normalize($uri)] = $action;
+        $this->routes['GET'][] = [
+            'uri' => $this->normalize($uri),
+            'action' => $action
+        ];
     }
 
     public function dispatch()
     {
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
         $uri = $this->normalize($uri);
 
-        if (!isset($this->routes[$method][$uri])) {
+        if (!isset($this->routes[$method])) {
             $this->abort(404);
             return;
         }
 
-        [$controller, $methodName] = $this->routes[$method][$uri];
+        foreach ($this->routes[$method] as $route) {
+            $params = [];
 
-        $controllerClass = "App\\Controllers\\{$controller}";
+            if ($this->match($route['uri'], $uri, $params)) {
+                [$controller, $methodName] = $route['action'];
 
-        if (!class_exists($controllerClass)) {
-            $this->abort(500, 'Controller Not Found');
-            return;
+                $controllerClass = "App\\Controllers\\{$controller}";
+                $instance = new $controllerClass();
+
+                call_user_func_array(
+                    [$instance, $methodName],
+                    $params
+                );
+                return;
+            }
         }
 
-        $instance = new $controllerClass();
-        if (!method_exists($instance, $methodName)) {
-            $this->abort(500, 'Method Not Found');
-            return;
-        }
-
-        call_user_func([$instance, $methodName]);
+        $this->abort(404);
     }
 
     // fungsi normalize url
@@ -53,5 +57,27 @@ class Router
     {
         http_response_code($code);
         echo $message ?: "{$code} Error";
+    }
+
+    // function match 
+    protected function match(string $routeUri, string $requestUri, array &$params): bool
+    {
+        $routeParts = explode('/', trim($routeUri, '/'));
+        $requestParts = explode('/', trim($requestUri, '/'));
+
+        if (count($routeParts) !== count($requestParts)) {
+            return false;
+        }
+
+        foreach ($routeParts as $index => $part) {
+            if (preg_match('/^{(.+)}$/', $part, $matches)) {
+                // parameter
+                $params[] = $requestParts[$index];
+            } elseif ($part !== $requestParts[$index]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

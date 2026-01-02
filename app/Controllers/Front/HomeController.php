@@ -8,8 +8,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $this->view('home', [
-            'title' => 'Welcome To Solve CMS'
+        $this->view('home', []);
+    }
+
+    public function show(string $slug)
+    {
+        $this->view('post', [
+            'title' => 'Post :' . $slug,
+            'slug' => $slug,
         ]);
     }
 }

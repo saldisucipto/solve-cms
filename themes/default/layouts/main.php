@@ -1,9 +1,12 @@
+<?php
+
+use App\Core\Config; ?>
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $title ?? 'Solve CMS' ?></title>
+    <title><?= $title ?? Config::get('app.name') ?></title>
 </head>
 
 <body>
