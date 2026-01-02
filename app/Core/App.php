@@ -2,9 +2,11 @@
 
 namespace App\Core;
 
+use App\Core\Router;
+
 class App
 {
-    protected Router $router; // dependancy injector 
+    protected Router $router; // dependancy injector
     public function __construct()
     {
         $this->router = new Router();
@@ -13,27 +15,27 @@ class App
     /**
      * Fungsi RUN ini adalah fungsi utama yang akan di triger oleh aplikasi
      *
-     * @return void 
+     * @return void
      */
     public function run(): void
     {
-        // Load Routes 
+        // Load Routes
         $this->loadRoutes();
 
-        // Dispatch Request 
+        // Dispatch Request
         $this->router->dispatch();
     }
 
     /**
      * Fungsi ini berguna untuk membaca routes secara dinamis
      *
-     * @return void 
+     * @return void
      */
     protected function loadRoutes(): void
     {
-        $routesPath = BASE_PATH . '/routes';
+        $router = $this->router;
 
-        require $routesPath . '/web.php';
-        require $routesPath . '/admin.php';
+        require BASE_PATH . '/routes/web.php';
+        require BASE_PATH . '/routes/admin.php';
     }
 }

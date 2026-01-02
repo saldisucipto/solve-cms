@@ -13,31 +13,13 @@ ini_set('display_error', 1);
 error_reporting(E_ALL);
 
 // Mendefinisikan Base Path Aplikasi 
-define('BASE_PATH', __DIR__);
+define('BASE_PATH', realpath(__DIR__ . '/..'));
 
-// Simple Autoload Tanpa Composer 
-spl_autoload_register(function ($class) {
-    $prefix = 'App\\';
-    $baseDir = BASE_PATH . '/app/';
-
-    // hanya load class App/ 
-    if (strncmp($prefix, $class, strlen($prefix)) !== 0) {
-        /**
-         * Fungsi ini berguna untuk membandingkan string dengan membuat jumlah karakter
-         */
-        return;
-    }
-
-    $relativeClass = substr($class, strlen($prefix));
-    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-    if (file_exists($file)) {
-        return $file;
-    }
-});
+// Autoload 
+require BASE_PATH . '/vendor/autoload.php';
 
 // Boot Application 
 use App\Core\App;
-
 // Mmebuat Object Baru
 $app = new App();
 $app->run();

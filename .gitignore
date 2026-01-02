@@ -1,0 +1,19 @@
+# Dependency directories
+/vendor/
+
+# Composer metadata
+# Simpan composer.lock agar versi library antar tim tetap sama
+# Jangan masukkan composer.lock ke gitignore
+
+# Environment variables (Berisi data sensitif seperti password DB)
+.env
+.env.local
+.env.*.local
+
+# IDE (Optional)
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

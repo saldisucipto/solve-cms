@@ -1,5 +1,6 @@
 <?php
 
-use App\Core\Router;
 
-/** @var Router $this */
+/** @var \App\Core\Router $router */
+
+$router->get('/', ['Front\HomeController', 'index']);
