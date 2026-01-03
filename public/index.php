@@ -1,12 +1,16 @@
 <?php
+// Memberikan Strict Value Pengecekan Type Data 
+declare(strict_types=1);
 
 /**
  * Solve CMS 
  * Ini adalah gate pertama request masuk ke aplikasi Solve CMS
  */
 
-// Memberikan Strict Value Pengecekan Type Data 
-declare(strict_types=1);
+// start Session 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Error Reporting Dev Module 
 ini_set('display_error', 1);

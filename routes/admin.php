@@ -1,5 +1,10 @@
 <?php
 
-use App\Core\Router;
+/** @var App\Core\Router $router */
 
-/** @var Router $this */
+
+$router->get('/admin/login', ['Admin\AuthController', 'loginForm']);
+$router->post('/admin/login', ['Admin\AuthController', 'login']);
+$router->get('/admin/logout', ['Admin\AuthController', 'logout']);
+
+$router->get('/admin', ['Admin\DashboardController', 'index']);
