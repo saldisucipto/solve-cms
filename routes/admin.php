@@ -2,9 +2,14 @@
 
 /** @var App\Core\Router $router */
 
+use App\Controllers\Admin\AuthController;
+use App\Controllers\Admin\DashboardController;
 
-$router->get('/admin/login', ['Admin\AuthController', 'loginForm']);
-$router->post('/admin/login', ['Admin\AuthController', 'login']);
-$router->get('/admin/logout', ['Admin\AuthController', 'logout']);
+$router->get('/admin/login', [AuthController::class, 'loginForm']);
+$router->post('/admin/login', [AuthController::class, 'login']);
+$router->get('/admin/logout', [AuthController::class, 'logout']);
 
-$router->get('/admin', ['Admin\DashboardController', 'index']);
+$router->group(['prefix' => '/admin', 'middleware' => ['auth', 'role:admin']], function ($router) {
+    $router->get('/admin', [DashboardController::class, 'index']);
+    $router->get('/admin/users', [DashboardController::class, 'index']);
+});

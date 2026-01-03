@@ -3,5 +3,7 @@
 
 /** @var \App\Core\Router $router */
 
-$router->get('/', ['Front\HomeController', 'index']);
-$router->get('/post/{slug}', ['Front\HomeController', 'show']);
+use App\Controllers\Front\HomeController;
+
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/post/{slug}', [HomeController::class, 'show']);

@@ -2,55 +2,107 @@
 
 namespace App\Core;
 
+use Exception;
+
 class Router
 {
     protected array $routes = [];
+    protected array $groupStack = [];
 
-    public function get(string $uri, array $action): void
+    public function group(array $option, callable $callback): void
     {
-        $this->routes['GET'][] = [
-            'uri' => $this->normalize($uri),
-            'action' => $action
-        ];
+        $this->groupStack[] = $option;
+        $callback($this);
+        array_pop($this->groupStack);
     }
 
-    public function post(string $uri, array $action): void
+
+    public function get(string $uri, $action): void
     {
-        $this->routes['POST'][] = [
-            'uri' => $this->normalize($uri),
-            'action' => $action
+        $this->addRoute('GET', $uri, $action);
+    }
+
+    public function post(string $uri, $action): void
+    {
+        $this->addRoute('POST', $uri, $action);
+    }
+
+    public function addRoute(string $method, string $uri, $action): void
+    {
+
+        if (is_string($action)) {
+            throw new \Exception('String route action is not allowed. Use array syntax.');
+        }
+        $middleware = [];
+
+        foreach ($this->groupStack as $group) {
+            if (isset($group['middleware'])) {
+                $middleware = array_merge($middleware, (array)$group['middleware']);
+            }
+        }
+
+        $this->routes[] = [
+            'method'     => $method,
+            'uri'        => $uri,
+            'action'     => $action,
+            'middleware' => $middleware,
         ];
     }
 
     public function dispatch()
     {
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri = $this->normalize($uri);
-
-        if (!isset($this->routes[$method])) {
-            $this->abort(404);
-            return;
-        }
-
-        foreach ($this->routes[$method] as $route) {
-            $params = [];
-
-            if ($this->match($route['uri'], $uri, $params)) {
-                [$controller, $methodName] = $route['action'];
-
-                $controllerClass = "App\\Controllers\\{$controller}";
-                $instance = new $controllerClass();
-
-                call_user_func_array(
-                    [$instance, $methodName],
-                    $params
-                );
+        $method = $_SERVER['REQUEST_METHOD'];
+        foreach ($this->routes as $route) {
+            if ($route['uri'] === $uri && $route['method'] === $method) {
+                $this->runMiddleware($route['middleware']);
+                $this->runAction($route['action']);
                 return;
             }
         }
-
         $this->abort(404);
+    }
+
+    protected function runMiddleware(array $middlewares)
+    {
+        foreach ($middlewares as $middleware) {
+            [$name, $class, $param] = Middleware::resolve($middleware);
+
+            $instance = $param ? new $class($param) : new $class();
+
+            $instance->handle();
+        }
+    }
+
+    protected function runAction($action)
+    {
+        if ($action instanceof \Closure) {
+            $action();
+            return;
+        }
+
+        // array controller [Classname::class, Method]
+        if (is_array($action)) {
+            if (count($action) !== 2) {
+                throw new Exception('Route action, setidaknya memliki 2 element array');
+            }
+
+            [$controller, $method] = $action;
+            if (!class_exists($controller)) {
+                throw new \Exception("Controller [$controller] not found");
+            }
+
+            $instance = new $controller();
+
+            if (!method_exists($instance, $method)) {
+                throw new \Exception("Method [$method] not found in controller [$controller]");
+            }
+
+            $instance->$method();
+            return;
+        }
+
+        throw new \Exception('Invalid route action type');
     }
 
     // fungsi normalize url
