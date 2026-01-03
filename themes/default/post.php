@@ -1,6 +1,5 @@
-<h2><?= $title ?></h2>
+<h2><?= htmlspecialchars($title) ?></h2>
 
-<p>
-    Ini halaman post dengan slug:
-    <strong><?= htmlspecialchars($slug) ?></strong>
-</p>
+<article>
+    <?= nl2br(htmlspecialchars($body)) ?>
+</article>

@@ -3,6 +3,7 @@
 namespace App\Controllers\Front;
 
 use App\Core\Controller;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
@@ -13,9 +14,16 @@ class HomeController extends Controller
 
     public function show(string $slug)
     {
+        $post = (new Post())->findBySlug($slug);
+        if (!$post) {
+            http_response_code(404);
+            echo 'Post Not Found';
+            return;
+        }
         $this->view('post', [
-            'title' => 'Post :' . $slug,
-            'slug' => $slug,
+            'title' => $post['title'],
+            'slug'  => $post['slug'],
+            'body'  => $post['body'],
         ]);
     }
 }
