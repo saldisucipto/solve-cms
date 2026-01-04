@@ -2,8 +2,6 @@
 
 namespace App\Core;
 
-use App\Core\Model;
-
 class QueryBuilder
 {
     protected string $table;

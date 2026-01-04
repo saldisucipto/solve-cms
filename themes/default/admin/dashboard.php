@@ -1,5 +1,12 @@
 <h2>Dashboard</h2>
 
-<p>Welcome, <?= htmlspecialchars($admin['name']) ?></p>
+<?php if (!empty($success)): ?>
+    <div class="alert alert-success">
+        <?= htmlspecialchars($success) ?>
+    </div>
+<?php endif; ?>
 
-<a href="/admin/logout">Logout</a>
+
+<p>Welcome, <?= $admin['name'] ?></p>
+
+<a href="/logout">Logout</a>
