@@ -5,7 +5,7 @@ namespace App\Middleware;
 use App\Core\Auth;
 use App\Core\MiddlewareInterface;
 
-class RoleMiddleware extends MiddlewareInterface
+class RoleMiddleware implements MiddlewareInterface
 {
     protected string $role;
 
@@ -14,7 +14,7 @@ class RoleMiddleware extends MiddlewareInterface
         $this->role = $role;
     }
 
-    public function handle()
+    public function handle(): void
     {
         if (Auth::role() !== $this->role) {
             http_response_code(403);
