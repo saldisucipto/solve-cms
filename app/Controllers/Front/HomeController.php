@@ -3,13 +3,14 @@
 namespace App\Controllers\Front;
 
 use App\Core\Controller;
+use App\Core\View;
 use App\Models\Post;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $this->view('home', []);
+        View::render('home');
     }
 
     public function show(string $slug)

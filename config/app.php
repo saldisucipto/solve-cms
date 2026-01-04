@@ -1,5 +1,4 @@
 <?php
-
 return [
     'name'  => $_ENV['APP_NAME'] ?? 'Solve CMS',
     'env'   => $_ENV['APP_ENV'] ?? 'production',

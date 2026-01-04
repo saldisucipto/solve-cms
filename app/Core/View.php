@@ -4,27 +4,40 @@ namespace App\Core;
 
 class View
 {
+    protected static string $layout;
+    protected static array $sections = [];
+    protected static array $sectionStack = [];
+
+    public static function extend(string $layout): void
+    {
+        self::$layout = $layout;
+    }
+
+    public static function section(string $name): void
+    {
+        self::$sectionStack[] = $name;
+        ob_start();
+    }
+
+    public static function endSection(): void
+    {
+        $name = array_pop(self::$sectionStack);
+        self::$sections[$name] = ob_get_clean();
+    }
+
+    public static function yield(string $name): void
+    {
+        echo self::$sections[$name] ?? '';
+    }
+
     public static function render(string $view, array $data = []): void
     {
-        $theme = Config::get('app.theme', 'default');
+        extract($data);
 
-        $viewFile = BASE_PATH . "/themes/{$theme}/{$view}.php";
-        $layout = BASE_PATH . "/themes/{$theme}/layouts/main.php";
+        require dirname(__DIR__, 2) . "/themes/default/{$view}.php";
 
-        if (!file_exists($viewFile)) {
-            http_response_code(500);
-            echo "View $view Not Found!";
-            return;
+        if (isset(self::$layout)) {
+            require dirname(__DIR__, 2) . "/themes/default/" . self::$layout . ".php";
         }
-
-        extract($data, EXTR_SKIP);
-
-        // buffer view
-        ob_start();
-        require $viewFile;
-        $content = ob_get_clean();
-
-        // load layut 
-        require $layout;
     }
 }

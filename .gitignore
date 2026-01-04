@@ -1,6 +1,8 @@
 # Dependency directories
 /vendor/
 
+/node_modules/
+
 # Composer metadata
 # Simpan composer.lock agar versi library antar tim tetap sama
 # Jangan masukkan composer.lock ke gitignore
