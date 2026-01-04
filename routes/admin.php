@@ -9,7 +9,7 @@ $router->get('/login', [AuthController::class, 'loginForm']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
-$router->group(['prefix' => '/admin', 'middleware' => ['auth']], function ($router) {
+$router->group(['middleware' => ['auth', 'permission:admin.view']], function ($router) {
     $router->get('/admin', [DashboardController::class, 'index']);
     $router->get('/admin/users', [DashboardController::class, 'index']);
 });

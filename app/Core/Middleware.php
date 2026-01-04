@@ -5,14 +5,14 @@ namespace App\Core;
 use Exception;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CsrfMiddleware;
-use App\Middleware\RoleMiddleware;
+use App\Middleware\PermissionMiddleware;
 
 class Middleware
 {
 
     protected static array $map = [
         'auth' => AuthMiddleware::class,
-        'role' => RoleMiddleware::class,
+        'permission' => PermissionMiddleware::class,
         'csrf' => CsrfMiddleware::class,
     ];
 
