@@ -12,10 +12,15 @@ use App\Core\View;
     <title><?= $title ?? Config::get('app.name') ?></title>
 
     <?php if (Config::get('app.env') === 'development'): ?>
-        <script type="module" src="http://localhost:5173/@vite/client"></script>
+        <script type="module" src="http://localhost:5173/js/app.js"></script>
+    <?php else : ?>
+        <!-- Menambahkan Asste Vite -->
+        <?php $asset = Vite::asset('resources/js/app.js') ?>
+        <?php foreach ($asset['css'] as $css): ?>
+            <link rel="stylesheet" href="<?= $css ?>">
+        <?php endforeach; ?>
+        <script type="module" src="<?= $asset['js'] ?>"></script>
     <?php endif; ?>
-
-    <script type="module" src="<?= Vite::asset('js/app.js') ?>"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-900">

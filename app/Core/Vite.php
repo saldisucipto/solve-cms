@@ -6,20 +6,31 @@ use App\Helpers\Path;
 
 class Vite
 {
-    public static function asset(string $path): string
+    public static function asset(string $path)
     {
-        if (Config::get('app.env') === 'development') {
-            return "http://localhost:5173/{$path}";
-        }
-
-        $manifestPath = Path::public('assets/manifest.json');
+        $manifestPath = Path::public('assets/.vite/manifest.json');
 
         if (!file_exists($manifestPath)) {
-            return '';
+            return [];
         }
 
+        // Merubah json ke array asosiativ melalu file manifest
         $manifest = json_decode(file_get_contents($manifestPath), true);
 
-        return '/assets/' . $manifest[$path]['file'];
+        if (!isset($manifest)) {
+            return [];
+        }
+
+        foreach ($manifest as $entry) {
+            if (($entry['src'] ?? null) === str_replace('resources/', '', $path)) {
+                return [
+                    'js'  => '/assets/' . $entry['file'],
+                    'css' => array_map(
+                        fn($css) => '/assets/' . $css,
+                        $entry['css'] ?? []
+                    ),
+                ];
+            }
+        }
     }
 }
