@@ -9,6 +9,6 @@ View::extend('layouts/defaults');
 <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
 
 <div class="bg-white p-4 rounded shadow">
-    Selamat datang
+    Selamat datang pakai Cache : <p>Welcome, <?= var_dump($data) ?></p>
 </div>
 <?php View::endSection(); ?>
