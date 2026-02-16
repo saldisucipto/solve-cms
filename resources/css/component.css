@@ -35,6 +35,10 @@
     @apply text-red-600 text-xs font-thin;
   }
 
+  .warning-container {
+    @apply m-3 text-red-600 text-xs font-thin;
+  }
+
   .button-primary {
     @apply px-3 py-1 text-center bg-button drop-shadow rounded-lg text-white;
   }
