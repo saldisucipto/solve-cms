@@ -9,8 +9,13 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
-  plugins: [FullReload(["themes/**/*.php", "routes/**/*.php"])],
-
+  plugins: [
+    FullReload([
+      resolve(__dirname, "themes/**/*.php"),
+      resolve(__dirname, "routes/**/*.php"),
+      resolve(__dirname, "app/**/*.php"),
+    ]),
+  ],
   build: {
     outDir: "../public/assets",
     emptyOutDir: true,

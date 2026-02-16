@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+  <!-- SOLVE LOGO ICON -->
+ <symbol id="si-solve" viewBox="0 0 24 24">
+  
+  <defs>
+    <linearGradient id="solveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#3FCCFF"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M14.19,18.15h0c-.96.96-2.51.96-3.47,0l-4.96-4.96c-.66-.66-1.19-1.39-1.57-2.19-.38-.8-.57-1.64-.57-2.52,0-.88.15-1.66.46-2.32.42-.92,1.11-1.86,2.05-2.81.55-.55,1.18-1.11,1.9-1.68.72-.57,1.42-.96,2.08-1.17.66-.21,1.38-.28,2.16-.22s1.46.24,2.03.55c.93.5,1.67,1.03,2.22,1.58l3.23,3.23c1.91,1.91,1.91,5.02,0,6.93h0s-6.86-6.86-6.86-6.86c-.61-.61-1.26-.92-1.95-.93-.68,0-1.33.29-1.93.9s-.9,1.24-.9,1.92c0,.68.31,1.33.93,1.95l5.12,5.12c.96.96.96,2.51,0,3.47Z"
+        fill="url(#solveGradient)"/>
+
+  <path d="M9.22,5.84h0c.95-.95,2.5-.95,3.45,0l4.97,4.97c.66.66,1.19,1.39,1.57,2.19.38.8.57,1.64.57,2.52,0,.88-.15,1.66-.46,2.32-.42.92-1.11,1.86-2.05,2.81-.55.55-1.18,1.11-1.91,1.68-.72.57-1.42.96-2.08,1.17-.66.21-1.38.28-2.16.22-.78-.06-1.46-.24-2.03-.55-.93-.5-1.67-1.03-2.22-1.58l-4.15-4.15c-1.41-1.41-1.41-3.69,0-5.1l.9-.9s.02,0,.03,0l6.84,6.84c.61.61,1.26.92,1.95.93.68,0,1.33-.29,1.93-.9s.9-1.24.9-1.92c0-.68-.31-1.33-.93-1.95l-5.11-5.11c-.96-.96-.96-2.52,0-3.48Z"
+        fill="url(#solveGradient)"/>
+
+</symbol>
+
+
+  <!-- ERP ICON -->
+  <symbol id="si-erp" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/>
+    <rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor"/>
+    <rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor"/>
+    <rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor"/>
+  </symbol>
+
+  <!-- CMS ICON -->
+  <symbol id="si-cms" viewBox="0 0 24 24">
+    <rect x="4" y="5" width="16" height="3" rx="1" fill="currentColor"/>
+    <rect x="4" y="10" width="10" height="3" rx="1" fill="currentColor"/>
+    <rect x="4" y="15" width="13" height="3" rx="1" fill="currentColor"/>
+  </symbol>
+
+  <!-- HRM ICON -->
+  <symbol id="si-hrm" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4" fill="currentColor"/>
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+  </symbol>
+
+  <!-- FINANCE ICON -->
+  <symbol id="si-finance" viewBox="0 0 24 24">
+    <path d="M12 2v20M6 6h8a3 3 0 010 6H8a3 3 0 000 6h10"
+      stroke="currentColor"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"/>
+  </symbol>
+
+</svg>
