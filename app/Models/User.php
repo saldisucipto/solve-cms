@@ -13,4 +13,5 @@ class User extends Model
     public string $email;
     public string $password;
     public ?string $role;
+    public string $created_at;
 }

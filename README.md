@@ -67,3 +67,11 @@ graph TD
 ```
 php cli/seed.php
 ```
+
+## Dev Server
+
+Command ini menjalankan dev server untuk PHP di folder public, sekaligus menjalankan Vite dev Server npm run dev :
+
+```
+php cli/develop.php
+```
