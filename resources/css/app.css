@@ -5,6 +5,7 @@
 
 /* Now you can safely import your custom file */
 @import "./component.css";
+@import "./modal.css";
 
 .si {
   display: inline-block;

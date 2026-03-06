@@ -109,6 +109,21 @@ use App\Core\View;
             </div>
         </main>
     </div>
+    <!-- Modal -->
+    <div id="app-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button id="modal-close">x</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    <!-- End Modal -->
+
+    <?php View::yield('inject-js') ?>
+
 </body>
 
 </html>

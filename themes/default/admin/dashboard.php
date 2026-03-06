@@ -23,8 +23,11 @@ View::extend('layouts/admin');
             <p class="text-sm text-slate-500">Overview of system status and recent activity.</p>
         </div>
     </div>
-    <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium shadow hover:bg-blue-700">
+    <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium shadow hover:bg-blue-700" id="btn-open-modal">
         Refresh
+    </button>
+    <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium shadow hover:bg-blue-700" id="btn-open-modal-1">
+        Refresh 1
     </button>
 </div>
 
@@ -66,3 +69,29 @@ View::extend('layouts/admin');
         class="text-sm text-slate-600 bg-blue-50/60 border border-blue-100 rounded-xl p-4 overflow-auto"><?= var_dump($data) ?></pre>
 </div>
 <?php View::endSection(); ?>
+
+<?php View::section('inject-js') ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // JS code here runs after DOM is ready
+        document.getElementById('btn-open-modal').addEventListener('click', () => {
+            $modal.open({
+                title: "User Detail",
+                content: `
+                    <p>Nama: Saldi</p>
+                    <p>Email: saldi@mail.com</p>
+                `
+            })
+        });
+        document.getElementById('btn-open-modal-1').addEventListener('click', () => {
+            $modal.open({
+                title: "User Detail",
+                content: `
+                    <p>Nama: Saldi</p>
+                    <p>Email: saldi@mail.com</p>
+                `
+            })
+        });
+    });
+</script>
+<?php View::endSection() ?>
