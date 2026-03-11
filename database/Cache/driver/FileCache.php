@@ -78,8 +78,19 @@ class FileCache implements CacheInterface
 
     public function flush(): bool
     {
-        foreach (glob($this->path . '*cache') as $file) {
+        foreach (glob($this->path . '*.cache') as $file) {
             unlink($file);
+        }
+        return true;
+    }
+
+    public function cleanExpired(): bool
+    {
+        foreach (glob($this->path . '*.cache') as $file) {
+            $payload = @unserialize(file_get_contents($file));
+            if ($payload && isset($payload['expires_at']) && $payload['expires_at'] < time()) {
+                unlink($file);
+            }
         }
         return true;
     }

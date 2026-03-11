@@ -113,10 +113,16 @@ class Router
     }
 
     // simple function abort 
-    protected function abort(int $code, string $message = ''): void
+    public function abort(int $code = 404)
     {
         http_response_code($code);
-        echo $message ?: "{$code} Error";
+        $viewPath = BASE_PATH . "/themes/default/errors/{$code}.php";
+        if (file_exists($viewPath)) {
+            require $viewPath;
+        } else {
+            echo "<h1>Error {$code}</h1>";
+        }
+        exit;
     }
 
     // function match 

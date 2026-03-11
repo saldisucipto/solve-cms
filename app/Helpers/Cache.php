@@ -53,6 +53,11 @@ class Cache
         return static::driver()->flush();
     }
 
+    public static function cleanExpired(): bool
+    {
+        return static::driver()->cleanExpired();
+    }
+
     /**
      * Cache::remember()
      */

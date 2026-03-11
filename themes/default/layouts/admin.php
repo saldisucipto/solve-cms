@@ -22,108 +22,144 @@ use App\Core\View;
     <?php endif; ?>
 </head>
 
-<body class="bg-blue-50 text-slate-900">
-    <div class="min-h-screen bg-gradient-to-b from-blue-100 via-blue-50 to-white">
-        <header class="bg-white/70 backdrop-blur border-b border-blue-100">
-            <div class="w-full px-4 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="h-9 w-9 rounded-lg bg-blue-600 text-white grid place-items-center font-bold">A</div>
+<body class="bg-slate-50 text-slate-900 font-sans">
+    <div class="min-h-screen flex flex-col lg:flex-row">
+        <!-- Sidebar Toggle for Mobile -->
+        <input id="sidebar-toggle" type="checkbox" class="peer hidden" />
+        <label for="sidebar-toggle"
+            class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity lg:hidden z-40 peer-checked:opacity-100 peer-checked:pointer-events-auto"></label>
+
+        <!-- Sidebar -->
+        <aside
+            class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-50 transform -translate-x-full transition-transform duration-300 peer-checked:translate-x-0 lg:translate-x-0 lg:static flex flex-col shadow-sm">
+            <!-- Sidebar Header -->
+            <div class="p-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="h-10 w-10 rounded-lg bg-blue-600 text-white grid place-items-center font-bold text-xl shadow-sm">
+                        S</div>
                     <div>
-                        <p class="text-sm text-blue-600 font-semibold">Admin</p>
-                        <p class="text-xs text-slate-500"><?= Config::get('app.name') ?></p>
+                        <h2 class="text-lg font-bold text-slate-800 tracking-tight"><?= Config::get('app.name') ?></h2>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Administration</p>
                     </div>
                 </div>
-                <div class="text-sm text-slate-500">System Panel</div>
             </div>
-        </header>
 
-        <main class="w-full py-6">
-            <div class="relative w-full px-4 lg:grid lg:grid-cols-[260px_1fr] lg:gap-6">
-                <input id="sidebar-toggle" type="checkbox" class="peer hidden" />
-
-                <label for="sidebar-toggle"
-                    class="fixed inset-0 bg-black/30 opacity-0 pointer-events-none transition lg:hidden z-30 peer-checked:opacity-100 peer-checked:pointer-events-auto"></label>
-
-                <aside
-                    class="bg-white/90 border border-blue-100 rounded-2xl shadow-sm overflow-hidden h-full fixed z-40 inset-y-0 left-0 w-64 transform -translate-x-full transition duration-200 peer-checked:translate-x-0 lg:static lg:translate-x-0 lg:z-auto">
-                    <div class="p-6 bg-gradient-to-br from-blue-600 via-blue-500 to-sky-400 text-white">
-                        <div class="flex items-center gap-3">
-                            <div class="h-10 w-10 rounded-xl bg-white/20 grid place-items-center text-lg font-bold">A
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-bold">Admin Panel</h2>
-                                <p class="text-sm text-blue-100">System Dashboard</p>
-                            </div>
-                        </div>
+            <!-- Sidebar Navigation -->
+            <?php
+            $currentRoute = $_SERVER['REQUEST_URI'] ?? '';
+            $isActive = function (string $route) use ($currentRoute): string {
+                // Untuk /admin, kita cek exact match agar tidak bentrok dengan sub-route seperti /admin/components
+                $active = ($route === '/admin') ? ($currentRoute === '/admin') : str_starts_with($currentRoute, $route);
+                return $active ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50';
+            };
+            ?>
+            <nav class="flex-grow p-4 space-y-6 overflow-y-auto">
+                <div>
+                    <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Main Menu</p>
+                    <div class="space-y-1">
+                        <a href="/admin"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isActive('/admin') ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a href="/admin/components"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isActive('/admin/components') ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                            </svg>
+                            UI Components
+                        </a>
                     </div>
+                </div>
 
-                    <nav class="p-4 space-y-5">
-                        <div>
-                            <p class="px-4 text-xs uppercase tracking-wider text-slate-400 mb-2">Main</p>
-                            <div class="space-y-1">
-                                <a href="#"
-                                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-50 text-blue-700 font-medium border border-blue-100">
-                                    <span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
-                                    Dashboard
-                                </a>
-                            </div>
-                        </div>
+                <div>
+                    <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Management</p>
+                    <div class="space-y-1">
+                        <a href="/admin/users"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isActive('/admin/users') ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 15.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            Users
+                        </a>
+                        <a href="#"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Content
+                        </a>
+                    </div>
+                </div>
+            </nav>
 
-                        <div>
-                            <p class="px-4 text-xs uppercase tracking-wider text-slate-400 mb-2">Management</p>
-                            <div class="space-y-1">
-                                <a href="#"
-                                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-blue-50 text-slate-600">
-                                    <span class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>
-                                    Users
-                                </a>
-                                <a href="#"
-                                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-blue-50 text-slate-600">
-                                    <span class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>
-                                    Roles
-                                </a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <p class="px-4 text-xs uppercase tracking-wider text-slate-400 mb-2">System</p>
-                            <div class="space-y-1">
-                                <a href="#"
-                                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-blue-50 text-slate-600">
-                                    <span class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>
-                                    Settings
-                                </a>
-                                <a href="#"
-                                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-blue-50 text-slate-600">
-                                    <span class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>
-                                    Logs
-                                </a>
-                            </div>
-                        </div>
-                    </nav>
-                </aside>
-
-                <section class="space-y-6 w-full lg:col-start-2">
-                    <?php View::yield('content'); ?>
-                </section>
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-slate-100">
+                <a href="/logout"
+                    class="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-red-50 text-red-600 font-bold text-xs hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Logout
+                </a>
             </div>
-        </main>
-    </div>
-    <!-- Modal -->
-    <div id="app-modal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title"></h3>
-                <button id="modal-close">x</button>
-            </div>
-            <div id="modal-body"></div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-grow flex flex-col min-w-0">
+            <!-- Top Header -->
+            <header
+                class="h-16 bg-white border-b border-slate-200 flex items-center px-6 justify-between sticky top-0 z-[100] lg:z-[100]">
+                <div class="flex items-center gap-4">
+                    <label for="sidebar-toggle"
+                        class="lg:hidden h-9 w-9 rounded-lg bg-slate-100 text-slate-600 grid place-items-center cursor-pointer hover:bg-slate-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </label>
+                    <div class="hidden sm:block">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">Status: <span
+                                class="text-emerald-500">System Live</span></p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="h-8 w-8 rounded-lg bg-blue-600 border-2 border-white shadow-sm"></div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-6 flex-grow">
+                <?php View::yield('content'); ?>
+            </main>
+
+            <!-- Footer -->
+            <footer class="p-6 pt-0 border-t border-slate-100 bg-white">
+                <div class="text-center">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">&copy; <?= date('Y') ?>
+                        <?= Config::get('app.name') ?> Admin Ecosystem</p>
+                </div>
+            </footer>
         </div>
     </div>
-    <!-- End Modal -->
 
-    <?php View::yield('inject-js') ?>
-
+    <!-- Modals & Injections -->
+    <?php View::yield('inject-js'); ?>
 </body>
 
 </html>

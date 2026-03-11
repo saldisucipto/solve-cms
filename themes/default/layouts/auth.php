@@ -23,8 +23,10 @@ use App\Core\View;
     <?php endif; ?>
 </head>
 
-<body class=" min-h-screen w-full flex flex-col justify-center">
-    <?php View::yield('content'); ?>
+<body class="min-h-screen w-full flex flex-col justify-center bg-slate-50 relative">
+    <div class="relative z-10">
+        <?php View::yield('content'); ?>
+    </div>
 </body>
 
 </html>

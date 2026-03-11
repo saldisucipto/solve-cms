@@ -17,4 +17,6 @@ interface CacheInterface
     public function forget(string $key): bool;
     // Fungsi flush untuk mengahpus semua data dari cache
     public function flush(): bool;
+    // Fungsi cleanExpired untuk menghapus semua data cache yang sudah expired
+    public function cleanExpired(): bool;
 }

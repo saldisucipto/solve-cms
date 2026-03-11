@@ -6,6 +6,7 @@ use Exception;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CsrfMiddleware;
 use App\Middleware\PermissionMiddleware;
+use App\Middleware\GuestMiddleware;
 
 class Middleware
 {
@@ -14,6 +15,7 @@ class Middleware
         'auth' => AuthMiddleware::class,
         'permission' => PermissionMiddleware::class,
         'csrf' => CsrfMiddleware::class,
+        'guest' => GuestMiddleware::class,
     ];
 
     public static function resolve(string $middleware)
