@@ -35,13 +35,16 @@ use App\Core\View;
             <!-- Sidebar Header -->
             <div class="p-6 border-b border-slate-100">
                 <div class="flex items-center gap-3">
-                    <div
+                    <div class=" h-10 w-full ">
+                        <img class=" object-cover " src="/asset/img/erp-logo.webp" alt="">
+                    </div>
+                    <!-- <div
                         class="h-10 w-10 rounded-lg bg-blue-600 text-white grid place-items-center font-bold text-xl shadow-sm">
                         S</div>
                     <div>
                         <h2 class="text-lg font-bold text-slate-800 tracking-tight"><?= Config::get('app.name') ?></h2>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Administration</p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
