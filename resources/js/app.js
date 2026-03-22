@@ -5,12 +5,12 @@ import "./form.js";
 import "./http.js";
 import "./modal.js";
 import Swal from "sweetalert2";
-import { openModal, closeModal } from "./modal.js";
+import { bukaModal, closeModal } from "./modal.js";
 
 window.swall = Swal;
 
 window.$modal = {
-  open: openModal,
+  open_modal: bukaModal,
   close: closeModal,
 };
 

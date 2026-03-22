@@ -38,13 +38,6 @@ use App\Core\View;
                     <div class=" h-10 w-full ">
                         <img class=" object-cover " src="/asset/img/erp-logo.webp" alt="">
                     </div>
-                    <!-- <div
-                        class="h-10 w-10 rounded-lg bg-blue-600 text-white grid place-items-center font-bold text-xl shadow-sm">
-                        S</div>
-                    <div>
-                        <h2 class="text-lg font-bold text-slate-800 tracking-tight"><?= Config::get('app.name') ?></h2>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Administration</p>
-                    </div> -->
                 </div>
             </div>
 
@@ -52,10 +45,10 @@ use App\Core\View;
             <?php
             $currentRoute = $_SERVER['REQUEST_URI'] ?? '';
             $isActive = function (string $route) use ($currentRoute): string {
-                // Untuk /admin, kita cek exact match agar tidak bentrok dengan sub-route seperti /admin/components
                 $active = ($route === '/admin') ? ($currentRoute === '/admin') : str_starts_with($currentRoute, $route);
                 return $active ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50';
             };
+            $isMasterActive = str_starts_with($currentRoute, '/admin/master');
             ?>
             <nav class="flex-grow p-4 space-y-6 overflow-y-auto">
                 <div>
@@ -70,6 +63,53 @@ use App\Core\View;
                             </svg>
                             Dashboard
                         </a>
+
+                        <!-- Master Menu with Submenu -->
+                        <div>
+                            <button
+                                class="master-toggle flex items-center justify-between w-full gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isMasterActive ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50' ?>">
+                                <div class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Master
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4 transform transition-transform master-icon" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                            </button>
+
+                            <!-- Submenu Items -->
+                            <div
+                                class="master-submenu max-h-0 overflow-hidden transition-all duration-300 <?= $isMasterActive ? 'max-h-96' : '' ?>">
+                                <div class="pl-3 space-y-1 mt-1">
+                                    <a href="/admin/master/produk"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/produk') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
+                                        <span
+                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                                        Master Produk
+                                    </a>
+                                    <a href="/admin/master/customer"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/customer') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
+                                        <span
+                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                                        Master Customer
+                                    </a>
+                                    <a href="/admin/master/supplier"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/supplier') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
+                                        <span
+                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                                        Master Supplier
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
                         <a href="/admin/components"
                             class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isActive('/admin/components') ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -121,6 +161,28 @@ use App\Core\View;
             </div>
         </aside>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const masterToggle = document.querySelector('.master-toggle');
+                const masterSubmenu = document.querySelector('.master-submenu');
+                const masterIcon = document.querySelector('.master-icon');
+
+                masterToggle.addEventListener('click', function() {
+                    const isOpen = masterSubmenu.classList.contains('max-h-96');
+
+                    if (isOpen) {
+                        masterSubmenu.classList.remove('max-h-96');
+                        masterSubmenu.classList.add('max-h-0');
+                        masterIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        masterSubmenu.classList.add('max-h-96');
+                        masterSubmenu.classList.remove('max-h-0');
+                        masterIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        </script>
+
         <!-- Main Content Area -->
         <div class="flex-grow flex flex-col min-w-0">
             <!-- Top Header -->
@@ -160,6 +222,9 @@ use App\Core\View;
             </footer>
         </div>
     </div>
+
+    <!-- Modal Components Injects -->
+    <?php View::yield('modal'); ?>
 
     <!-- Modals & Injections -->
     <?php View::yield('inject-js'); ?>

@@ -21,4 +21,7 @@ $router->group(['middleware' => ['auth', 'permission:admin.view']], function ($r
     $router->get('/admin/users', [DashboardController::class, 'index']);
     $router->get('/admin/components', [ComponentController::class, 'index']);
     $router->post('/admin/upload', [ComponentController::class, 'upload']);
+
+    // Master Module 
+    $router->get('/admin/master/produk', [DashboardController::class, 'master_produk']);
 });
