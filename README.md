@@ -68,6 +68,15 @@ graph TD
 php cli/seed.php
 ```
 
+## DATABASE MIGRATION
+
+> Implementasi CLI untuk menjalankan migration pembuatan atau penghapusan table database
+
+```
+php cli/migration.php ModelMigration
+php cli/migration.php ModelMigration down
+```
+
 ## Dev Server
 
 Command ini menjalankan dev server untuk PHP di folder public, sekaligus menjalankan Vite dev Server npm run dev :

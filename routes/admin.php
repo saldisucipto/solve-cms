@@ -5,6 +5,7 @@
 use App\Controllers\Admin\AuthController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\ComponentController;
+use App\Controllers\Admin\Master\MasterController;
 use App\Controllers\Admin\RegisterController;
 
 $router->group(['middleware' => ['guest']], function ($router) {
@@ -24,4 +25,8 @@ $router->group(['middleware' => ['auth', 'permission:admin.view']], function ($r
 
     // Master Module 
     $router->get('/admin/master/produk', [DashboardController::class, 'master_produk']);
+    $router->get('/admin/master/customer', [DashboardController::class, 'master_customer']);
+
+    // Store Master Module
+    $router->post('/admin/master/customer/store', [MasterController::class, 'store_master_customer']);
 });

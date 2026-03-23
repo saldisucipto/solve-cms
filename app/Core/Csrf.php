@@ -6,17 +6,15 @@ class Csrf
 {
     static function token(): string
     {
-        if (!Session::get('_token')) {
-            Session::set('_token', bin2hex(random_bytes(32)));
+        if (!Session::get('_csrf')) {
+            Session::set('_csrf', bin2hex(random_bytes(32)));
         }
-        return Session::get('_token');
+        return Session::get('_csrf');
     }
 
     static function validate(string $token): bool
     {
-        $storedToken = trim(Session::get('_token'));
-
-        // Pastikan token yang dikirim user ada DAN token di session ada
+        $storedToken = trim(Session::get('_csrf'));
         if (!$token || !$storedToken) {
             return false;
         }

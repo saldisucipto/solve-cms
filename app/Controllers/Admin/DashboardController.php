@@ -29,4 +29,14 @@ class DashboardController extends Controller
             'admin' => Auth::user(),
         ]);
     }
+
+    public function master_customer(): void
+    {
+        Gate::authorize('admin.view');
+        $this->view('admin/master/customer', [
+            'title' => 'Master Customer',
+            'success' => FlashSession::get('success'),
+            'admin' => Auth::user(),
+        ]);
+    }
 }

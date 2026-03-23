@@ -9,7 +9,7 @@ class Config
         $segments = explode('.', $key);
         $file = array_shift($segments);
 
-        $path = BASE_PATH . "/config/{$file}.php";
+        $path = self::base_path("config/{$file}.php");
 
         if (!file_exists($path)) {
             return $default;
@@ -25,5 +25,11 @@ class Config
         }
 
         return $config;
+    }
+
+
+    protected static function base_path($path = '')
+    {
+        return dirname(__DIR__, 2) . ($path ? '/' . $path : '');
     }
 }

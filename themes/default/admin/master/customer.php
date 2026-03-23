@@ -3,9 +3,20 @@
 use App\Core\View;
 use App\Core\Csrf;
 use App\Core\Config;
+use App\Core\Session;
+use App\Helpers\Debug;
 use App\Helpers\Form;
 
 View::extend('layouts/admin');
+// initilize Session for flash messages
+
+$modal_form = false;
+if (isset($_SESSION['input_errors'])) {
+    $modal_form = true;
+    $error_input = $_SESSION['input_errors'];
+    unset($_SESSION['input_errors']);
+}
+
 ?>
 
 <?php View::section('content'); ?>
@@ -14,8 +25,8 @@ View::extend('layouts/admin');
     <div
         class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800">Master Produk</h1>
-            <p class="text-sm text-slate-500 font-medium mt-1">Reusable components for your admin ecosystem.</p>
+            <h1 class="text-2xl font-bold text-slate-800">Master Customer</h1>
+            <p class="text-sm text-slate-500 font-medium mt-1">Ini adalah halaman untuk mengelola data customer.</p>
         </div>
         <div class="flex gap-2">
             <button onclick="$modal.open_modal()"
@@ -24,7 +35,7 @@ View::extend('layouts/admin');
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add New Product
+                Add New Customer
             </button>
         </div>
     </div>
@@ -173,10 +184,10 @@ View::extend('layouts/admin');
     <?php View::section('modal') ?>
     <!-- Modal Form -->
     <div
-        class="app-modal absolute  min-h-screen h-full top-0 z-[150] bg-black/50 backdrop-blur-sm flex items-start justify-start w-full mx-auto ">
-        <div class="bg-white rounded-2xl shadow-lg w-full max-w-screen-md   mx-auto overflow-hidden mt-10">
+        class="app-modal hidden fixed inset-0 z-[150] bg-black/50 backdrop-blur-sm flex items-center justify-center w-full overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-lg w-full max-w-screen-md mx-auto overflow-hidden my-auto">
             <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 ">
-                <h3 class="modal-title text-lg font-semibold text-slate-600 ">Master Produk Form</h3>
+                <h3 class="modal-title text-lg font-semibold text-slate-600 ">Master Customer Form</h3>
                 <button onclick="window.$modal.close()"
                     class="modal-close text-slate-400 hover:text-slate-600 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -186,18 +197,39 @@ View::extend('layouts/admin');
                     </svg>
                 </button>
             </div>
-            <div class="p-6 modal-body flex flex-col gap-5">
-                <?php Form::begin('POST', '/master/produk/store', 'multipart/form-data') ?>
+            <div class="p-6 modal-body flex flex-col gap-5 max-h-[calc(100vh-200px)] overflow-y-auto">
+                <?php Form::begin('POST', '/admin/master/customer/store', 'multipart/form-data') ?>
                 <?php echo Form::csrf() ?>
-                <div class="flex gap-2">
+                <div class="flex gap-5">
                     <div class="flex-1">
-                        <?php echo Form::input('text', 'nama', 'Contoh. Si Solve', $errors['name'] ?? null, 'Nama') ?>
-                    </div>
-                    <div class="flex-1">
-                        <?php echo Form::input('text', 'nama', 'Masukkan nama', $errors['name'] ?? null) ?>
+                        <?php echo Form::input(type: 'text', name: 'nama', placeholder: 'Contoh. Atresna Creative, PT', error: $error_input['nama'] ?? null, label_input: 'Nama Customer', attrs: ['required' => 'required'], value: Session::get('_old')['nama'] ?? '') ?>
                     </div>
                 </div>
-                <?php echo Form::input('text', 'nama', 'Masukkan nama', $errors['name'] ?? null) ?>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'phone', 'Contoh. 08123456789', $error_input['phone'] ?? null, 'Nomor Telepon', attrs: ['required' => 'required'], value: Session::get('_old')['phone'] ?? '') ?>
+                    </div>
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'email', 'Contoh. email@example.com', $error_input['email'] ?? null, 'Email Customer', attrs: ['required' => 'required'], value: Session::get('_old')['email'] ?? '') ?>
+                    </div>
+                </div>
+                <?php echo Form::textarea('alamat', 'Contoh. Jl. Merdeka No. 123, Jakarta', $error_input['alamat'] ?? null, 'Alamat Customer', attrs: ['required' => 'required'], value: Session::get('_old')['alamat'] ?? '') ?>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'kota', 'Contoh. Jakarta', $error_input['kota'] ?? null, 'Kota', attrs: ['required' => 'required'], value: Session::get('_old')['kota'] ?? '') ?>
+                    </div>
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'npwp', 'Contoh. 32212 221231', $error_input['npwp'] ?? null, 'NPWP Customer', attrs: ['required' => 'required'], value: Session::get('_old')['npwp'] ?? '') ?>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'customer_person', 'Contoh. Rudi', $error_input['customer_person'] ?? null, 'Contact Person', attrs: ['required' => 'required'], value: Session::get('_old')['customer_person'] ?? '') ?>
+                    </div>
+                    <div class="flex-1">
+                        <?php echo Form::input('text', 'coa', 'Contoh. 32212 221231', $error_input['coa'] ?? null, 'COA Customer', attrs: ['required' => 'required'], value: Session::get('_old')['coa'] ?? '') ?>
+                    </div>
+                </div>
                 <?php echo Form::button('Simpan', 'submit',) ?>
                 <?php Form::end() ?>
             </div>
@@ -263,6 +295,12 @@ View::extend('layouts/admin');
         let editorInstance;
 
         document.addEventListener('DOMContentLoaded', function() {
+
+            // initialize Form Modal if there are validation errors
+            if (<?= $modal_form ? 'true' : 'false' ?>) {
+                window.$modal.open_modal();
+            }
+
 
             // 1. Initialize DataTable
             $('#myDataTable').DataTable({

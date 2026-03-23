@@ -15,8 +15,8 @@ class DB
             return static::$pdo;
         }
         $config = Config::get('database');
+        $app_state = Config::get('app');
         $conn = $config['connections'][$config['default']];
-
         $dsn = sprintf(
             "mysql:host=%s;port=%s;dbname=%s;charset=%s",
             $conn['host'],

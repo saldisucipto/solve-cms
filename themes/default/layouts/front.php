@@ -52,7 +52,7 @@ use App\Core\View;
                     </div>
                 <?php else: ?>
                     <div class="flex items-center gap-4">
-                        <a href="/dashboard"
+                        <a href="/admin"
                             class="px-5 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm">
                             Dashboard
                         </a>

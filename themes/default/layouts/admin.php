@@ -88,12 +88,6 @@ use App\Core\View;
                             <div
                                 class="master-submenu max-h-0 overflow-hidden transition-all duration-300 <?= $isMasterActive ? 'max-h-96' : '' ?>">
                                 <div class="pl-3 space-y-1 mt-1">
-                                    <a href="/admin/master/produk"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/produk') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
-                                        <span
-                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
-                                        Master Produk
-                                    </a>
                                     <a href="/admin/master/customer"
                                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/customer') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
                                         <span
@@ -106,6 +100,13 @@ use App\Core\View;
                                             class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
                                         Master Supplier
                                     </a>
+                                    <a href="/admin/master/produk"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/produk') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
+                                        <span
+                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                                        Master Produk
+                                    </a>
+
                                 </div>
                             </div>
                         </div>
