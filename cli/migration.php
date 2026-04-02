@@ -21,9 +21,13 @@ if (!$className) {
 $fullClass = "Database\\Migrate\\{$className}";
 
 // cek file
-$file = __DIR__ . "/../Database/Migrate/{$className}.php";
+$file = dirname(__DIR__)
+    . DIRECTORY_SEPARATOR . 'database'
+    . DIRECTORY_SEPARATOR . 'Migrate'
+    . DIRECTORY_SEPARATOR . $className . '.php';
 
 if (!file_exists($file)) {
+    echo "File {$file} \n";
     echo "❌ File migration tidak ditemukan: {$className}.php\n";
     exit;
 }
@@ -54,7 +58,5 @@ if ($action === 'down') {
 } else {
     $migration->up();
 }
-
-$migration->up();
 
 echo "✅ Migration selesai\n";

@@ -6,17 +6,11 @@ use App\Core\DB;
 
 class AdminSeeder
 {
-    static function run(): void
+    public static function run(): void
     {
-        // mulai koneksi 
+        // mulai koneksi
         $pdo = DB::conn();
 
-        // Membuat Role Admin 
-        $pdo->exec("INSERT IGNORE INTO roles (name) values ('admin')");
-        $roleID = $pdo->lastInsertId() ?: self::getRoleID('admin');
-
-
-        // Default Permissions List 
         $permissions = [
             'admin.view',
             'user.view',
@@ -30,60 +24,84 @@ class AdminSeeder
             'setting.update',
         ];
 
-        foreach ($permissions as $permission) {
-            $statement = $pdo->prepare(
-                "INSERT IGNORE INTO permissions (name) VALUES (:name)"
-            );
-            $statement->execute(['name' => $permission]);
+        $pdo->beginTransaction();
 
-            $permissionID = $pdo->lastInsertId() ?: self::getPermissionID($permission);
+        try {
+            $pdo->prepare("INSERT IGNORE INTO roles (name) VALUES (:name)")
+                ->execute(['name' => 'admin']);
 
-            // role permission 
-            $pdo->prepare("INSERT IGNORE INTO role_permissions (role_id, permission_id) VALUES (:role, :permisson)")->execute([
-                'role' => $roleID,
-                'permisson' => $permissionID,
-            ]);
+            $roleId = (int) ($pdo->lastInsertId() ?: self::getRoleId('admin'));
 
             $pdo->prepare(
                 "INSERT IGNORE INTO users (name, email, password)
-             VALUES ('Administrator', 'admin@local.test', :password)"
+                VALUES (:name, :email, :password)"
             )->execute([
+                'name' => 'Administrator',
+                'email' => 'admin@local.test',
                 'password' => password_hash('admin123', PASSWORD_BCRYPT),
             ]);
 
-            $userId = $pdo->lastInsertId() ?: self::getUserId('admin@local.test');
+            $userId = (int) ($pdo->lastInsertId() ?: self::getUserId('admin@local.test'));
 
-            // 5️⃣ USER ↔ ROLE
+            $permissionStatement = $pdo->prepare(
+                "INSERT IGNORE INTO permissions (name) VALUES (:name)"
+            );
+
+            $rolePermissionStatement = $pdo->prepare(
+                "INSERT IGNORE INTO role_permissions (role_id, permission_id)
+                VALUES (:role_id, :permission_id)"
+            );
+
+            foreach ($permissions as $permission) {
+                $permissionStatement->execute(['name' => $permission]);
+                $permissionId = (int) ($pdo->lastInsertId() ?: self::getPermissionId($permission));
+
+                $rolePermissionStatement->execute([
+                    'role_id' => $roleId,
+                    'permission_id' => $permissionId,
+                ]);
+            }
+
             $pdo->prepare(
                 "INSERT IGNORE INTO user_roles (user_id, role_id)
-             VALUES (:user, :role)"
+                VALUES (:user_id, :role_id)"
             )->execute([
-                'user' => $userId,
-                'role' => $roleID,
+                'user_id' => $userId,
+                'role_id' => $roleId,
             ]);
 
+            $pdo->commit();
             echo "✅ Admin seeder executed successfully\n";
+        } catch (\Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $e;
         }
     }
 
     protected static function getRoleId(string $name): int
     {
-        return (int) DB::conn()
-            ->query("SELECT id FROM roles WHERE name='{$name}'")
-            ->fetchColumn();
+        $statement = DB::conn()->prepare("SELECT id FROM roles WHERE name = :name LIMIT 1");
+        $statement->execute(['name' => $name]);
+
+        return (int) $statement->fetchColumn();
     }
 
     protected static function getPermissionId(string $name): int
     {
-        return (int) DB::conn()
-            ->query("SELECT id FROM permissions WHERE name='{$name}'")
-            ->fetchColumn();
+        $statement = DB::conn()->prepare("SELECT id FROM permissions WHERE name = :name LIMIT 1");
+        $statement->execute(['name' => $name]);
+
+        return (int) $statement->fetchColumn();
     }
 
     protected static function getUserId(string $email): int
     {
-        return (int) DB::conn()
-            ->query("SELECT id FROM users WHERE email='{$email}'")
-            ->fetchColumn();
+        $statement = DB::conn()->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+        $statement->execute(['email' => $email]);
+
+        return (int) $statement->fetchColumn();
     }
 }
