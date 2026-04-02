@@ -3,7 +3,6 @@
 
 namespace App\Core;
 
-use App\Models\Admin;
 use App\Models\User;
 
 class Auth
@@ -21,13 +20,15 @@ class Auth
         if (!$user || !password_verify($password, $user->password)) {
             return false;
         }
+
+        $role = self::resolveRole($user->id);
         session_regenerate_id(true);
 
         Session::set('user', (array) $user);
 
         Session::set('auth', [
             'id'         => $user->id,
-            'role'       => $user->role,
+            'role'       => $role,
             'ua'         => $_SERVER['HTTP_USER_AGENT'],
             'login_time' => time(), // Tambahkan waktu login
         ]);
@@ -73,5 +74,22 @@ class Auth
         Session::forget('auth');
         Session::forget('user');
         session_destroy();
+    }
+
+    protected static function resolveRole(int $userId): ?string
+    {
+        $statement = DB::conn()->prepare(
+            "SELECT roles.name
+            FROM roles
+            INNER JOIN user_roles ON user_roles.role_id = roles.id
+            WHERE user_roles.user_id = :user_id
+            ORDER BY roles.id ASC
+            LIMIT 1"
+        );
+
+        $statement->execute(['user_id' => $userId]);
+        $role = $statement->fetchColumn();
+
+        return $role !== false ? (string) $role : null;
     }
 }
