@@ -36,4 +36,10 @@ class HomeController extends Controller
             'body'  => $post['body'],
         ]);
     }
+
+    public function fallback(string $slug)
+    {
+        http_response_code(404);
+        echo "Page Not Found: " . htmlspecialchars($slug);
+    }
 }

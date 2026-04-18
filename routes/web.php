@@ -7,3 +7,9 @@ use App\Controllers\Front\HomeController;
 
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/post/{slug}', [HomeController::class, 'show']);
+
+
+
+
+// Fallback Route
+$router->get('{slug}', [HomeController::class, 'fallback']);

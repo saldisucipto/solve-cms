@@ -43,4 +43,36 @@ class DB
         }
         return static::$pdo;
     }
+
+    public static function statement(string $query, array $bindings = [])
+    {
+        $statment = self::conn()->prepare($query);
+        return $statment->execute($bindings);
+    }
+
+    public static function select(string $query, array $bindings = []): array
+    {
+        $stmt = self::conn()->prepare($query);
+        $stmt->execute($bindings);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function first(string $query, array $bindings = []): ?array
+    {
+        $stmt = self::conn()->prepare($query);
+        $stmt->execute($bindings);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    public static function insertGetId(string $query, array $bindings = []): int
+    {
+        $stmt = self::conn()->prepare($query);
+        $stmt->execute($bindings);
+
+        return (int) self::conn()->lastInsertId();
+    }
 }

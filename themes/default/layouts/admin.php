@@ -36,7 +36,7 @@ use App\Core\View;
             <div class="p-6 border-b border-slate-100">
                 <div class="flex items-center gap-3">
                     <div class=" h-10 w-full ">
-                        <img class=" object-cover " src="/asset/img/erp-logo.webp" alt="">
+                        <img class=" object-cover " src="/asset/img/cms-logo.webp" alt="">
                     </div>
                 </div>
             </div>
