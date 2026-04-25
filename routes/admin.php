@@ -7,6 +7,7 @@ use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\ComponentController;
 use App\Controllers\Admin\Master\MasterController;
 use App\Controllers\Admin\RegisterController;
+use App\Controllers\Admin\SettingController;
 
 $router->group(['middleware' => ['guest']], function ($router) {
     $router->get('/login', [AuthController::class, 'loginForm']);
@@ -29,4 +30,8 @@ $router->group(['middleware' => ['auth', 'permission:admin.view']], function ($r
 
     // Store Master Module
     $router->post('/admin/master/customer/store', [MasterController::class, 'store_master_customer']);
+
+
+    // Setting 
+    $router->get('/admin/settings', [SettingController::class, 'settings']);
 });

@@ -31,7 +31,7 @@ use App\Core\View;
 
         <!-- Sidebar -->
         <aside
-            class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-50 transform -translate-x-full transition-transform duration-300 peer-checked:translate-x-0 lg:translate-x-0 lg:static flex flex-col shadow-sm">
+            class="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 z-50 transform -translate-x-full transition-transform duration-300 peer-checked:translate-x-0 lg:translate-x-0 lg:static flex flex-col shadow-sm">
             <!-- Sidebar Header -->
             <div class="p-6 border-b border-slate-100">
                 <div class="flex items-center gap-3">
@@ -49,6 +49,7 @@ use App\Core\View;
                 return $active ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50';
             };
             $isMasterActive = str_starts_with($currentRoute, '/admin/master');
+            $isSettingActive = str_starts_with($currentRoute, '/admin/settings');
             ?>
             <nav class="flex-grow p-4 space-y-6 overflow-y-auto">
                 <div>
@@ -143,6 +144,17 @@ use App\Core\View;
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Content
+                        </a>
+                        <a href="/admin/settings"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg <?= $isSettingActive ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50' ?> font-medium transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            General Settings
                         </a>
                     </div>
                 </div>

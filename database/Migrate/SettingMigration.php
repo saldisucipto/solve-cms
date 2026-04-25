@@ -10,9 +10,12 @@ class SettingMigration extends Migrations
     {
         $this->pdo->exec("CREATE TABLE IF NOT EXISTS settings (
             id INT AUTO_INCREMENT PRIMARY KEY,
-           `key` VARCHAR(255) NOT NULL UNIQUE,
-            value TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+           `key` VARCHAR(150) NOT NULL UNIQUE,
+            `value` TEXT NOT NULL,
+            `group` VARCHAR(100) NULL, 
+            `type` VARCHAR(50) NULL, 
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL
         )");
 
         echo "✅ Table settings created\n";

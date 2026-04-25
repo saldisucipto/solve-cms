@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\View;
+use App\Helpers\Setting;
 
 View::extend('layouts/front');
 ?>
@@ -8,6 +9,9 @@ View::extend('layouts/front');
 <?php View::section('content'); ?>
 <div class="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-32 bg-white">
     <!-- Hero Section -->
+    <h3>
+        hi there <?php var_dump(Setting::settings()); ?>
+    </h3>
     <div class="container mx-auto px-6 relative z-10">
         <div class="max-w-3xl mx-auto text-center">
             <div

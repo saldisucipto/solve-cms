@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Core\Router;
+use App\Services\SettingService;
 use Dotenv\Dotenv;
 
 class App
@@ -34,6 +35,9 @@ class App
 
         // Dispatch Request
         $this->router->dispatch();
+
+        // Load General Settings 
+        $this->loadGeneralSetting();
     }
 
     /**
@@ -47,5 +51,10 @@ class App
 
         require BASE_PATH . '/routes/web.php';
         require BASE_PATH . '/routes/admin.php';
+    }
+
+    protected function loadGeneralSetting()
+    {
+        SettingService::load();
     }
 }
