@@ -21,7 +21,7 @@ function serve()
 {
     echo "Starting PHP Server! \n";
     $php = proc_open(
-        "php -S localhost:8000 -t public",
+        "php -S localhost:8001 -t public",
         [STDIN, STDOUT, STDERR],
         $pipes
     );

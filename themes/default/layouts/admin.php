@@ -1,5 +1,6 @@
 <?php
 
+use App\Core\Cms;
 use App\Core\Config;
 use App\Core\Vite;
 use App\Core\View;
@@ -48,8 +49,12 @@ use App\Core\View;
                 $active = ($route === '/admin') ? ($currentRoute === '/admin') : str_starts_with($currentRoute, $route);
                 return $active ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50';
             };
-            $isMasterActive = str_starts_with($currentRoute, '/admin/master');
             $isSettingActive = str_starts_with($currentRoute, '/admin/settings');
+            $cmsMenus = [];
+
+            if (Cms::isBooted()) {
+                $cmsMenus = Cms::hooks()->applyFilters('admin.sidebar.menu', $cmsMenus, $currentRoute);
+            }
             ?>
             <nav class="flex-grow p-4 space-y-6 overflow-y-auto">
                 <div>
@@ -63,63 +68,6 @@ use App\Core\View;
                                     d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                             </svg>
                             Dashboard
-                        </a>
-
-                        <!-- Master Menu with Submenu -->
-                        <div>
-                            <button
-                                class="master-toggle flex items-center justify-between w-full gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isMasterActive ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100' : 'text-slate-600 font-medium hover:bg-slate-50' ?>">
-                                <div class="flex items-center gap-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    Master
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="h-4 w-4 transform transition-transform master-icon" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                            </button>
-
-                            <!-- Submenu Items -->
-                            <div
-                                class="master-submenu max-h-0 overflow-hidden transition-all duration-300 <?= $isMasterActive ? 'max-h-96' : '' ?>">
-                                <div class="pl-3 space-y-1 mt-1">
-                                    <a href="/admin/master/customer"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/customer') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
-                                        <span
-                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
-                                        Master Customer
-                                    </a>
-                                    <a href="/admin/master/supplier"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/supplier') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
-                                        <span
-                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
-                                        Master Supplier
-                                    </a>
-                                    <a href="/admin/master/produk"
-                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= str_starts_with($currentRoute, '/admin/master/produk') ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
-                                        <span
-                                            class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
-                                        Master Produk
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="/admin/components"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $isActive('/admin/components') ?>">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                            </svg>
-                            UI Components
                         </a>
                     </div>
                 </div>
@@ -158,6 +106,71 @@ use App\Core\View;
                         </a>
                     </div>
                 </div>
+
+                <?php if (!empty($cmsMenus)): ?>
+                    <div>
+                        <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">CMS Modules</p>
+                        <div class="space-y-1">
+                            <?php foreach ($cmsMenus as $menu): ?>
+                                <?php
+                                $href = $menu['href'] ?? '#';
+                                $label = $menu['label'] ?? 'Module';
+                                $children = $menu['children'] ?? [];
+                                $isGroupActive = false;
+
+                                foreach ($children as $child) {
+                                    if (isset($child['href']) && str_starts_with($currentRoute, $child['href'])) {
+                                        $isGroupActive = true;
+                                        break;
+                                    }
+                                }
+
+                                $activeClass = str_starts_with($currentRoute, $href) || $isGroupActive
+                                    ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-100'
+                                    : 'text-slate-600 font-medium hover:bg-slate-50';
+                                ?>
+                                <?php if (!empty($children)): ?>
+                                    <div>
+                                        <div class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $activeClass ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 012-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                            </svg>
+                                            <?= htmlspecialchars($label) ?>
+                                        </div>
+                                        <div class="pl-3 mt-1 space-y-1">
+                                            <?php foreach ($children as $child): ?>
+                                                <?php
+                                                $childHref = $child['href'] ?? '#';
+                                                $childLabel = $child['label'] ?? 'Sub Menu';
+                                                $childClass = str_starts_with($currentRoute, $childHref)
+                                                    ? 'bg-blue-50 text-blue-600 font-semibold'
+                                                    : 'text-slate-600 hover:bg-slate-50';
+                                                ?>
+                                                <a href="<?= htmlspecialchars($childHref) ?>"
+                                                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm <?= $childClass ?>">
+                                                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                                                    <?= htmlspecialchars($childLabel) ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <a href="<?= htmlspecialchars($href) ?>"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all <?= $activeClass ?>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 012-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                        <?= htmlspecialchars($label) ?>
+                                    </a>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </nav>
 
             <!-- Sidebar Footer -->
@@ -174,27 +187,7 @@ use App\Core\View;
             </div>
         </aside>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const masterToggle = document.querySelector('.master-toggle');
-                const masterSubmenu = document.querySelector('.master-submenu');
-                const masterIcon = document.querySelector('.master-icon');
 
-                masterToggle.addEventListener('click', function() {
-                    const isOpen = masterSubmenu.classList.contains('max-h-96');
-
-                    if (isOpen) {
-                        masterSubmenu.classList.remove('max-h-96');
-                        masterSubmenu.classList.add('max-h-0');
-                        masterIcon.style.transform = 'rotate(0deg)';
-                    } else {
-                        masterSubmenu.classList.add('max-h-96');
-                        masterSubmenu.classList.remove('max-h-0');
-                        masterIcon.style.transform = 'rotate(180deg)';
-                    }
-                });
-            });
-        </script>
 
         <!-- Main Content Area -->
         <div class="flex-grow flex flex-col min-w-0">

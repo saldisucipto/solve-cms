@@ -53,13 +53,45 @@ class Router
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
+
+        if (Cms::isBooted()) {
+            Cms::hooks()->doAction('router.before_dispatch', $uri, $method);
+            Cms::events()->dispatch('router.before_dispatch', [
+                'uri' => $uri,
+                'method' => $method,
+            ]);
+        }
+
         foreach ($this->routes as $route) {
-            if ($route['uri'] === $uri && $route['method'] === $method) {
+            $params = [];
+            if (($route['uri'] === $uri || $this->match($route['uri'], $uri, $params)) && $route['method'] === $method) {
                 $this->runMiddleware($route['middleware']);
-                $this->runAction($route['action']);
+                if (Cms::isBooted()) {
+                    Cms::hooks()->doAction('router.route_matched', $route);
+                    Cms::events()->dispatch('router.route_matched', $route);
+                }
+                $this->runAction($route['action'], $params);
+
+                if (Cms::isBooted()) {
+                    Cms::hooks()->doAction('router.after_dispatch', $uri, $method, $route);
+                    Cms::events()->dispatch('router.after_dispatch', [
+                        'uri' => $uri,
+                        'method' => $method,
+                        'route' => $route,
+                    ]);
+                }
                 return;
             }
         }
+
+        if (Cms::isBooted()) {
+            Cms::hooks()->doAction('router.not_found', $uri, $method);
+            Cms::events()->dispatch('router.not_found', [
+                'uri' => $uri,
+                'method' => $method,
+            ]);
+        }
+
         $this->abort(404);
     }
 
@@ -74,10 +106,10 @@ class Router
         }
     }
 
-    protected function runAction($action)
+    protected function runAction($action, array $params = [])
     {
         if ($action instanceof \Closure) {
-            $action();
+            $action(...$params);
             return;
         }
 
@@ -98,7 +130,7 @@ class Router
                 throw new \Exception("Method [$method] not found in controller [$controller]");
             }
 
-            $instance->$method();
+            $instance->$method(...$params);
             return;
         }
 

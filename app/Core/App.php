@@ -9,9 +9,12 @@ use Dotenv\Dotenv;
 class App
 {
     protected Router $router; // dependancy injector
+    protected CmsKernel $cms;
+
     public function __construct()
     {
         $this->loadEnv();
+        $this->bootCms();
         $this->router = new Router();
     }
 
@@ -30,14 +33,17 @@ class App
      */
     public function run(): void
     {
+        // Hook lifecycle awal request
+        Cms::hooks()->doAction('app.booting');
+
         // Load Routes
         $this->loadRoutes();
 
+        // Load General Settings
+        $this->loadGeneralSetting();
+
         // Dispatch Request
         $this->router->dispatch();
-
-        // Load General Settings 
-        $this->loadGeneralSetting();
     }
 
     /**
@@ -56,5 +62,12 @@ class App
     protected function loadGeneralSetting()
     {
         SettingService::load();
+    }
+
+    protected function bootCms(): void
+    {
+        $this->cms = new CmsKernel(BASE_PATH . '/modules');
+        $this->cms->boot();
+        Cms::setKernel($this->cms);
     }
 }

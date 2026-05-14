@@ -28,6 +28,9 @@ yang ringan dan mudah dikembangkan.
 - Controller
 - Service Container
 - Config Loader
+- Hook & Filter Manager
+- Event Dispatcher
+- Module Service Provider
 
 ---
 
@@ -38,12 +41,17 @@ yang ringan dan mudah dikembangkan.
 - [Middleware](#middleware)
 - [Cache](#cache)
 - [CLI](#cli)
+- [Module System](#module-system)
 
 ### Request Lifecycle
 
 ```mermaid
 graph TD
     Request --> Kernel
+    Kernel --> ModuleManager
+    ModuleManager --> ServiceProvider
+    ServiceProvider --> HookFilter
+    ServiceProvider --> EventListener
     Kernel --> Router
     Router --> Middleware
     Middleware --> Controller
@@ -60,6 +68,21 @@ graph TD
 
 > Implementasi Cache sudah dilakukan dengan File Driver
 
+### Module System
+
+Setiap module diletakkan di folder modules dan memiliki class Module sebagai service provider:
+
+- register(): mendaftarkan binding, hook, filter
+- boot(): menjalankan listener/event saat aplikasi sudah siap
+
+Contoh:
+
+```
+modules/CoreCms/Module.php
+namespace Modules\CoreCms;
+class Module extends App\Core\ServiceProvider
+```
+
 ## CLI
 
 > Implementasi CLI untuk beberapa hal yang butuh dilakukan seperti pembuatan seeder ke database, pembuatan file startup ketika project dijalankan, Cara Penggunaanya seperti ini :
@@ -75,6 +98,8 @@ php cli/seed.php
 ```
 php cli/migration.php ModelMigration
 php cli/migration.php ModelMigration down
+php cli/migration.php all
+php cli/migration.php all down
 ```
 
 ## Dev Server
