@@ -1,0 +1,34 @@
+{
+    "name": "Solve Minimal",
+    "slug": "solve-minimal",
+    "version": "1.0.0",
+    "author": "Solve CMS",
+    "description": "A restrained, typography-led theme with a centred header and list-style blog.",
+    "templates": {
+        "header": ["centered", "classic"],
+        "footer": ["simple", "columns"],
+        "blog": ["list", "grid"],
+        "homepage": ["simple", "featured"]
+    },
+    "defaults": {
+        "primary_color": "#111827",
+        "secondary_color": "#374151",
+        "background_color": "#fafaf9",
+        "text_color": "#1c1917",
+        "link_color": "#111827",
+        "font_family": "Instrument Sans",
+        "heading_font": "Instrument Sans",
+        "body_font": "Instrument Sans",
+        "font_size_base": 17,
+        "line_height": 1.8,
+        "container_width": 960,
+        "header_layout": "centered",
+        "footer_layout": "simple",
+        "sidebar_enabled": false,
+        "blog_layout": "list",
+        "homepage_layout": "simple",
+        "post_card": "text-only",
+        "show_featured_section": false,
+        "show_search": true
+    }
+}

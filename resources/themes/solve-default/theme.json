@@ -1,0 +1,34 @@
+{
+    "name": "Solve Default",
+    "slug": "solve-default",
+    "version": "1.0.0",
+    "author": "Solve CMS",
+    "description": "A clean, blue-accented starter theme with a classic header and a grid blog.",
+    "templates": {
+        "header": ["classic", "centered"],
+        "footer": ["simple", "columns"],
+        "blog": ["grid", "list"],
+        "homepage": ["featured", "simple"]
+    },
+    "defaults": {
+        "primary_color": "#2563eb",
+        "secondary_color": "#0f172a",
+        "background_color": "#ffffff",
+        "text_color": "#0f172a",
+        "link_color": "#2563eb",
+        "font_family": "Instrument Sans",
+        "heading_font": "Instrument Sans",
+        "body_font": "Instrument Sans",
+        "font_size_base": 16,
+        "line_height": 1.7,
+        "container_width": 1152,
+        "header_layout": "classic",
+        "footer_layout": "simple",
+        "sidebar_enabled": true,
+        "blog_layout": "grid",
+        "homepage_layout": "featured",
+        "post_card": "image-top",
+        "show_featured_section": true,
+        "show_search": true
+    }
+}

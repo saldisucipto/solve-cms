@@ -1,0 +1,6 @@
+/* Solve Default theme overrides. Loaded only on the public website. */
+.fe-theme-solve-default .fe-post-card {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}

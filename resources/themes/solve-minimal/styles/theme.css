@@ -1,0 +1,6 @@
+/* Solve Minimal theme overrides. Loaded only on the public website. */
+.fe-theme-solve-minimal h1,
+.fe-theme-solve-minimal h2,
+.fe-theme-solve-minimal h3 {
+    letter-spacing: -0.02em;
+}
