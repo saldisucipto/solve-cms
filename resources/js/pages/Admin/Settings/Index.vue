@@ -164,6 +164,7 @@ function removeBranding(type) {
                             <input
                                 :ref="(el) => (fileInputs.logo = el)"
                                 type="file"
+                                data-type="logo"
                                 class="hidden"
                                 accept="image/*"
                                 @change="uploadFile($event, 'logo')"
@@ -236,6 +237,7 @@ function removeBranding(type) {
                             <input
                                 :ref="(el) => (fileInputs.dashboard_logo = el)"
                                 type="file"
+                                data-type="dashboard_logo"
                                 class="hidden"
                                 accept="image/*"
                                 @change="uploadFile($event, 'dashboard_logo')"
@@ -270,7 +272,7 @@ function removeBranding(type) {
                                         size="sm"
                                         variant="outline"
                                         :disabled="uploading === 'favicon'"
-                                        @click="pickFavicon"
+                                        @click="pick('favicon')"
                                     >
                                         <Upload class="size-4" />
                                         {{
@@ -299,6 +301,7 @@ function removeBranding(type) {
                             <input
                                 :ref="(el) => (fileInputs.favicon = el)"
                                 type="file"
+                                data-type="favicon"
                                 class="hidden"
                                 accept="image/*,.ico"
                                 @change="uploadFile($event, 'favicon')"
