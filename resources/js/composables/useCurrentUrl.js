@@ -10,7 +10,7 @@ const currentUrlReactive = computed(
             page.url,
             typeof window !== 'undefined'
                 ? window.location.origin
-                : 'http://localhost',
+                : 'https://blog.atresna.com',
         ).pathname,
 );
 
